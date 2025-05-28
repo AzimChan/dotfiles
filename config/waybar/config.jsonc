@@ -1,0 +1,111 @@
+{
+	"layer": "bottom",
+	"position": "top",
+	"height": 15,
+	"margin": "1, 20, 0, 20",
+	"modules-left": [
+		"cpu",
+    "hyprland/language"
+	],
+	"modules-center": [
+    "hyprland/workspaces"
+	],
+	"modules-right": [
+		"tray",
+		"backlight",
+		"pulseaudio",
+		"network",
+		"battery",
+		"clock",
+	],  
+  "hyprland/language": {
+    "format": "{}",
+  },
+	"hyprland/workspaces": {
+		"format": "{icon}",
+		"on-click": "activate",
+		"all-outputs": true,
+		"format-icons": {
+			"1": "1",
+			"2": "2",
+			"3": "3",
+			"4": "4",
+			"5": "5",
+			"6": "6",
+			"7": "7",
+			"8": "8",
+			"9": "9",
+			"10": "10"
+		},
+		"persistent-workspaces": {
+		  "*": 10			
+    }
+	},
+	"cpu": {
+		"interval": 10,
+		"format": " {usage}%",
+		"max-length": 10,
+		"on-click": "kitty -e 'htop'"
+	},
+	"tray": {
+		"icon-size": 15
+	},
+	"backlight": {
+		"device": "intel_backlight",
+		"format": "{icon} {percent}%",
+		"format-icons": [
+			"☼",
+			""
+		],
+		"on-scroll-down": "brightnessctl -c backlight set 1%-",
+		"on-scroll-up": "brightnessctl -c backlight set +1%"
+	},
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"format-bluetooth": "{icon}  {volume}%",
+		"format-bluetooth-muted": " ",
+		"format-muted": " ",
+		"format-icons": {
+			"headphone": "",
+			"hands-free": "",
+			"headset": "",
+			"phone": "",
+			"portable": "",
+			"car": "",
+			"default": [
+				"",
+				"",
+				""
+			]
+		},
+    "on-click": "pavucontrol",
+	},
+	
+  "network":{
+    "format": "({signalStrength}%)   {essid}",
+    "format-disconnected":" 󰤫 ",
+    "format-ethernet":" {ifname}"
+  },
+
+	"battery": {
+		"states": {
+      "good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-charging": " {capacity}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+    "interval":5,
+	},
+	"clock": {
+		"format": "{:%I:%M %p  :%a,%b %d}",
+		"rotate": 0,
+	},
+}

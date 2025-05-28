@@ -1,0 +1,156 @@
+
+{
+	"layer": "top",
+	"position": "top",
+
+	"modules-left": [
+		"hyprland/workspaces",
+		"custom/right-arrow-dark"
+	],
+	"modules-center": [
+		"custom/left-arrow-dark",
+		"clock#1",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"clock#2",
+		"custom/right-arrow-dark",
+		"custom/right-arrow-light",
+		"clock#3",
+		"custom/right-arrow-dark"
+	],
+	"modules-right": [
+    "custom/left-arrow-dark",
+    "hyprland/language",
+    "custom/left-arrow-light",
+		"custom/left-arrow-dark",
+    "network",
+    "custom/left-arrow-light",
+		"custom/left-arrow-dark",
+    "pulseaudio",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"memory",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"cpu",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"battery",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"disk",
+		"custom/left-arrow-light",
+		"custom/left-arrow-dark",
+		"tray"
+	],
+
+	"custom/left-arrow-dark": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/left-arrow-light": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/right-arrow-dark": {
+		"format": "",
+		"tooltip": false
+	},
+	"custom/right-arrow-light": {
+		"format": "",
+		"tooltip": false
+	},
+
+	"hyprland/workspaces": {
+		"disable-scroll": true,
+		"format": "{name}"
+	},
+  "hyprland/language": {
+    "format": "{}",
+    "format-en":"en",
+  },
+  "network":{
+    "format": " {essid} ({signalStrength}%)  ",
+    "format-disconnected":" 󰤫 ",
+    "format-ethernet":" {ifname} ",
+    "tooltip-format":"subject name to change when on ethernet {ifname} via {gwaddr} 󰈀",
+		"tooltip-format-disconnected":  "Disconnected",
+  },
+
+	"clock#1": {
+		"format": "{:%a}",
+		"tooltip": false
+	},
+	"clock#2": {
+		"format": "{:%H:%M}",
+		"tooltip": false
+	},
+	"clock#3": {
+		"format": "{:%m-%d}",
+		"tooltip": false
+	},
+
+  "pulseaudio": {
+    "format": "{icon} {volume}% ",
+    "format-muted": "MUTE {volume}%",
+    "format-bluetooth": " 󰗾  {volume}% ",
+    "format-bluetooth-muted": " 󰗿  {volume}% ",
+    "format-icons": {
+      "default": [" 󰕿 ", " 󰖀 ", " 󰕾 "],
+      "headphone": "󱡬",
+    "speaker": [" 󰕿 ", " 󰖀 ", " 󰕾 "],
+    "hdmi": " 󰡁 ",
+      "headset": " 󱇰 ",
+    "hands-free": "noname3",
+    "portable": "noname4",
+    "car": "noname5",
+    "hifi": "noname6",
+    "phone": "noname7",
+    },
+
+    //"on-click": "kitty --title 'Floating Kitty pulsemixer' --detach pulsemixer",
+    "on-click": "pavucontrol",
+  "on-click-right": "pactl set-sink-mute 0 toggle && $HOME/.scripts/progressbar.sh --volume-mute",
+
+  "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume",
+  "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume",
+
+  "tooltip": true,
+  "tooltip-format": "Volume: {volume}%\n{desc}",
+  },
+	"memory": {
+		"interval": 5,
+		"format": "Mem {}%"
+	},
+	"cpu": {
+		"interval": 5,
+		"format": "CPU {usage:2}%"
+	},
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+		"format-icons": [
+			"󰂎",
+			"󰁻",
+			"󰁾",
+			"󰂁",
+			"󰁹"
+		],
+    "tooltip": true,
+		"tooltip-format": "{timeTo} Power: {power} Watt",
+    "interval":5,
+	},
+	"disk": {
+		"interval": 5,
+		"format": "Disk {percentage_used:2}%",
+		"path": "/"
+	},
+	"tray": {
+		"icon-size": 20
+	}
+}

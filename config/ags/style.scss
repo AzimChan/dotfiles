@@ -1,0 +1,84 @@
+window.Bar {
+    background: transparent;
+    color: white;
+    font-size: 15px;
+    font-family: monospace;
+    color: #fdf6e3;
+
+    centerbox {
+        background: black;
+        border: 1px solid white;
+        margin: 0 100px;
+
+        box {
+            margin: 0 5px;
+        }
+
+        .Workspaces {
+            button {
+                border: inherit;
+                min-width: 40px;
+                padding: 0 2px;
+                margin: 2px 1px;
+                background: black;
+                border-radius: 0;
+            }
+
+            button.empty {
+                background: black;
+            }
+
+            button.active {
+                background: #3b444b;
+            }
+
+            button:hover {
+                background: #1a1a1a;
+                border: #1a1a1a;
+                padding: 0 3px;
+            }
+
+            .focused {
+                background: #1F75FE;
+            }
+
+            /* TODO: Implement urgent workspaces
+                #workspaces button.urgent {
+                  background: red;
+                }
+            */
+        }
+
+        .Focused {
+            background: #1F75FE;
+            min-width: 50px;
+            padding: 0 10px;
+        }
+
+        .Battery {
+            color: #859900;
+        }
+
+        .SysTray {
+            button {
+                background: black;
+                padding: 0 0;
+            }
+        }
+
+        .Language {
+            border: 1px solid white;
+            min-width: 50px;
+
+            label {
+                margin-left: 15px;
+                /* TODO: Make align center*/
+            }
+        }
+
+
+
+
+
+    }
+}

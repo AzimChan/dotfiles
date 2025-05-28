@@ -1,0 +1,113 @@
+# Read `man 5 sway` for a complete reference.
+include ~/.config/sway/keybinds.conf
+
+### Variables
+#
+# Logo key. Use Mod1 for Alt.
+#
+    set $mod Mod4
+#
+# Home row direction keys, like vim
+#
+    set $left h
+    set $down j
+    set $up k
+    set $right l
+    # Your preferred terminal emulator
+    set $term kitty
+    set $browser zen-browser
+    # Your preferred application launcher
+    # Note: pass the final command to swaymsg so that the resulting window can be opened
+    # on the original workspace that the command was run on.
+    #set $menu pgrep wofi >/dev/null 2>&1 && killall wofi || wofi --show drun
+    set $menu pgrep fuzzel >/dev/null 2>&1 && killall fuzzel || fuzzel
+
+
+
+### Auto start
+
+# Wallpaper
+exec swww-daemon
+# Notification daemon
+exec mako
+# Battery low daemon
+exec batsignal -m 3 -p
+# Autotiling
+exec_always autotiling
+# Clipboard
+exec wl-paste --type text --watch cliphist store
+exec wl-paste --type image --watch cliphist store
+
+### Border configuration
+default_border pixel 4
+# Color shemes for windows 
+set $bgcolor    #90d5ff  
+set $in-bgcolor #282828 
+set $text       #ffffff
+set $u-bgcolor  #57b9ff
+set $indicator  #a8a3c1
+set $in-text    #969696
+#                       border          background      text            indicator (a line which shows where the next window will be placed)     
+client.focused          $bgcolor        $bgcolor        $text           $indicator
+client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
+client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
+client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor 
+#exec_always ./config/polybar/launch.sh --docky
+# default gaps
+gaps inner 6
+gaps outer 4
+
+
+### Output configuration
+#
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+#output * bg /home/barbos/Pictures/efca7c5758a036a995fce18074bdeb37971d5ab7.jpg fill
+#
+# Example configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+input * {
+    natural_scroll disabled
+    xkb_layout us,ru,kz
+    xkb_options grp:alt_shift_toggle
+}
+input type:touchpad {
+  natural_scroll enabled
+  accel_profile adaptive
+  click_method clickfinger
+  click_method button_areas
+  drag enabled
+  dwt disabled 
+  events disabled_on_external_mouse
+  middle_emulation enabled
+  pointer_accel 0.3
+  scroll_method two_finger
+  tap enabled
+
+} 
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+### Key bindings
+### Status Bar
+
+exec_always pkill waybar || waybar --config .config/waybar/minimal/config.jsonc --style .config/waybar/minimal/style.css
+
+include /etc/sway/config.d/*

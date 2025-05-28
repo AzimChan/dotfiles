@@ -1,0 +1,135 @@
+
+{
+	"layer": "top",
+	"position": "top",
+	"margin": "0 100",
+
+	"modules-left": [
+		"hyprland/workspaces"
+	],
+	"modules-center": [
+		"hyprland/window"
+	],
+	"modules-right": [
+		"network",
+		"pulseaudio",
+		"memory",
+		"battery",
+		"tray",
+		"hyprland/language",
+		"clock#2",
+		"clock#3",
+	],
+
+	"hyprland/workspaces": {
+		"disable-scroll": true,
+		"format": "{icon}",
+		"all-outputs": true,
+		"format-icons": {
+			"1": "one",
+			"2": "two",
+			"3": "three",
+			"4": "four",
+			"5": "five",
+			"6": "six",
+			"7": "seven",
+			"8": "eight",
+			"9": "nine",
+			"10": "ten"
+		},
+		"persistent-workspaces": {
+			"*": 10,
+		}
+	},
+
+	"hyprland/language": {
+	    "format": "{}",
+	    "format-en":"en",
+	    "format-kk":"kz", //Kazakh for some strange reason stands for kk (somebody change this)
+	    "format-ru":"ru",
+	},
+	"network":{
+	    "format": " {essid} ({signalStrength}%)  ",
+	    "format-disconnected":" 󰤫 ",
+	    "format-ethernet":" {ifname} ",
+	    "tooltip-format":"subject name to change when on ethernet {ifname} via {gwaddr} 󰈀",
+			"tooltip-format-disconnected":  "Disconnected",
+	},
+
+	"clock#1": {
+		"format": "{:%a}",
+		"tooltip": false
+	},
+	"clock#2": {
+		"format": "{:%H:%M}",
+		"tooltip": false
+	},
+	"clock#3": {
+		"format": "{:%m-%d}",
+		"tooltip": false
+	},
+
+	"pulseaudio": {
+	    "format": "{icon} {volume}% ",
+	    "format-muted": "MUTE {volume}%",
+	    "format-bluetooth": " 󰗾  {volume}% ",
+	    "format-bluetooth-muted": " 󰗿  {volume}% ",
+	    "format-icons": {
+	      "default": [" 󰕿 ", " 󰖀 ", " 󰕾 "],
+	      "headphone": "󱡬",
+	    "speaker": [" 󰕿 ", " 󰖀 ", " 󰕾 "],
+	    "hdmi": " 󰡁 ",
+	      "headset": " 󱇰 ",
+	    "hands-free": "noname3",
+	    "portable": "noname4",
+	    "car": "noname5",
+	    "hifi": "noname6",
+	    "phone": "noname7",
+	    },
+
+	    //"on-click": "kitty --title 'Floating Kitty pulsemixer' --detach pulsemixer",
+	    "on-click": "pavucontrol",
+	  "on-click-right": "pactl set-sink-mute 0 toggle && $HOME/.scripts/progressbar.sh --volume-mute",
+
+	  "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1% && $HOME/.scripts/progressbar.sh --volume",
+	  "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1% && $HOME/.scripts/progressbar.sh --volume",
+
+	  "tooltip": true,
+	  "tooltip-format": "Volume: {volume}%\n{desc}",
+	},
+	"memory": {
+		"interval": 5,
+		"format": "Mem {}%"
+	},
+	"cpu": {
+		"interval": 5,
+		"format": "CPU {usage:2}%"
+	},
+	"battery": {
+			"states": {
+				"good": 95,
+				"warning": 30,
+				"critical": 15
+			},
+			"format": "{icon} {capacity}%",
+	    "format-charging": "󰂄 {capacity}%",
+			"format-icons": [
+				"󰂎",
+				"󰁻",
+				"󰁾",
+				"󰂁",
+				"󰁹"
+			],
+	    "tooltip": true,
+			"tooltip-format": "{timeTo} Power: {power} Watt",
+	    "interval":5,
+	},
+	"disk": {
+		"interval": 5,
+		"format": "Disk {percentage_used:2}%",
+		"path": "/"
+	},
+	"tray": {
+		"icon-size": 20
+	}
+}
