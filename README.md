@@ -1,5 +1,5 @@
 # Dotfiles
-It includes my configurations for both sway and hyprland, although I mainly use hyprland now.
+It includes my configurations for hyprland(included some configs for sway tinkering).
 
 Configs are symlinked to ~/.config manually
 

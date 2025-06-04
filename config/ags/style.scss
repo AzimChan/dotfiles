@@ -38,21 +38,24 @@ window.Bar {
                 padding: 0 3px;
             }
 
+            button.urgent {
+                background: red;
+            }
+
             .focused {
                 background: #1F75FE;
             }
 
-            /* TODO: Implement urgent workspaces
-                #workspaces button.urgent {
-                  background: red;
-                }
-            */
         }
 
         .Focused {
             background: #1F75FE;
             min-width: 50px;
             padding: 0 10px;
+        }
+
+        .Audio {
+            color: #268bd2;
         }
 
         .Battery {
@@ -75,10 +78,5 @@ window.Bar {
                 /* TODO: Make align center*/
             }
         }
-
-
-
-
-
     }
 }

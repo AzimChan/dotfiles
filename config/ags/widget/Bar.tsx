@@ -1,6 +1,9 @@
 import { App } from "astal/gtk3"
 import { Variable, GLib, bind } from "astal"
 import { Astal, Gtk, Gdk } from "astal/gtk3"
+import { subprocess, exec, execAsync } from "astal/process"
+import { ButtonProps } from "astal/gtk4/widget";
+
 import Hyprland from "gi://AstalHyprland"
 import Mpris from "gi://AstalMpris"
 import Battery from "gi://AstalBattery"
@@ -69,22 +72,32 @@ function toWord(num) {
         default: return num
     }
 }
-function Workspaces() { 
 
-    const hypr = Hyprland.get_default()
+type WsButtonProps = ButtonProps & {
+    ws: Hyprland.Workspace;
+};
+/*    const urgent = Variable(-1)
+    hypr.connect("event", (_, event, data) => {
+        if(event === "urgent"){
+            const client = hypr.get_client(data)
+            if (!client) return
 
-    const labels=[
-        "one", "two", "three", "four", "five",
-        "six", "seven", "eight", "nine", "ten"
-    ]
+            const wsId = client.workspace.id
+            const currentWs = hypr.focusedWorkspace.id
+
+            if (wsId !== currentWs) {
+                urgent.set(wsId)
+            }
+        }
+    });
 
     const render = function(activeWorkspaces){
         const active = activeWorkspaces
             .filter(ws => !(ws.id >= -99 && ws.id <= -2))
             .sort((a, b) => a.id - b.id)
-            .map(ws => (toWord(ws.id)));
+            .map(ws => (toWord(ws.id)));*/
         
-        return <box className="Workspaces">
+        /*return <box className="Workspaces">
             {labels.map((label, index) => (
                 <button
                     className={active.includes(label) ? (
@@ -96,26 +109,86 @@ function Workspaces() {
                     {label}
                 </button>
             ))}
-        </box>
-    }
+        </box>*/
 
-    return bind(hypr, "workspaces").as(render)
+function WorkspaceButton({ ws, ...props }: WsButtonProps) {
+    const hypr = Hyprland.get_default();
+    const urgent = Variable(-1);
+    const className = Variable.derive(
+        [bind(hypr, "focusedWorkspace"), bind(hypr, "clients"), bind(urgent)],
+        (fws, _, uws) => {
+            let name = "empty";
+            if(ws.id == fws.id){
+                name = "focused";
+                urgent.set(-1);
+            }
+            else if(ws.id == uws){
+                name = "urgent";
+            }
+            else if(hypr.get_workspace(ws.id)?.get_clients().length > 0){
+                name = "active";
+            }
+            return name;
+        },
+    );
+    // detect urgent workspaces
+    hypr.connect("event", (_, event, data) => {
+        if(event === "urgent"){
+            const client = hypr.get_client(data)
+            if (!client) return
+
+            const wsId = client.workspace.id
+            const currentWs = hypr.focusedWorkspace.id
+
+            if (wsId !== currentWs) {
+                urgent.set(wsId)
+            }
+        }
+    });
+
+    return <button
+        className={bind(className).as(String)}
+        onDestroy={() => classNames.drop()}
+        onClicked={() => ws.focus()}>
+        {toWord(ws.id)}
+    </button>;
+};
+
+
+function Workspaces() { 
+    return (
+        <box className="Workspaces">
+          {[0,1,2,3,4,5,6,7,8,9].map((i) => (
+            <WorkspaceButton ws={Hyprland.Workspace.dummy(i + 1, null)} />
+          ))}
+        </box> );
+    // TODO: urgent workspaces
 }
 
 function FocusedClient() {
     const hypr = Hyprland.get_default();
     const focused = bind(hypr, "focusedClient");
 
+    function maxWidth(word, width = 5){
+        if(word.length < width){
+            return word
+        }
+        else{
+            return word.slice(0, width) + "..."
+        }
+    }
+
     return <box
         className="Focused"
         visible={focused.as(Boolean)}>
         {focused.as(client => (
             client && <label 
-                label={bind(client, "title").as(String)} 
-                maxWidthChars={1}
+                label={bind(client, "title")
+                    .as(title => maxWidth(title, 70))} // width of focused client chars
             />
         ))}
     </box>
+    // TODO: fix overlapping client 
 }
 
 function Time({ format = " %H:%M %m-%d " }) {
@@ -131,7 +204,8 @@ function Time({ format = " %H:%M %m-%d " }) {
 
 function Language() {
     const hypr = Hyprland.get_default();
-    const layout = Variable("English");
+    const layout = Variable("Na");
+
     function shorten(text){
         switch(text){
             case("English (US)"):
@@ -144,17 +218,34 @@ function Language() {
                 return "kz";
                 break;
             default:
-                return "00"
+                return text;
                 break;
             // TODO: make detection of language at startup
         }
     }
 
-    hypr.connect("keyboard-layout", (_self, _keyboard, _layout) => {layout.set(_layout);})
+    hypr.connect("keyboard-layout", 
+        (_self, _keyboard, _layout) => {layout.set(_layout);})
+
     return <box className="Language">
         <label label={bind(layout).as(shorten)}/>
     </box>
+    // TODO: fix not resetting language at start
 }
+
+
+function Audio() {
+    const speaker = Wp.get_default()?.audio.defaultSpeaker!
+
+    return <box className="Audio">
+        <icon icon={bind(speaker, "volumeIcon")} />
+        <label label={bind(speaker, "volume").as(vol =>
+            `${Math.floor(vol * 100)}%`
+        )} />
+    </box>
+}
+
+
 
 export default function Bar(monitor: Gdk.Monitor) {
     const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
@@ -173,6 +264,7 @@ export default function Bar(monitor: Gdk.Monitor) {
             </box>
             <box hexpand halign={Gtk.Align.END} >
                 <Wifi />
+                <Audio />
                 <BatteryLevel />
                 <SysTray />
                 <Language />
@@ -181,4 +273,4 @@ export default function Bar(monitor: Gdk.Monitor) {
         </centerbox>
     </window>
 }
-// TODO: Volume, Wifi name, Memory, Language, Padding
+// TODO: Volume, Memory
