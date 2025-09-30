@@ -58,7 +58,6 @@ require('lazy').setup({
       },
     },
   },
-  require 'lsp',
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -322,6 +321,9 @@ require('lazy').setup({
   require 'plugins.gitsigns',
   require 'plugins.which-key',
   require 'plugins.telescope',
+  require 'plugins.obsidian-nvim',
+  require 'plugins.image',
+  require 'lsp',
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the

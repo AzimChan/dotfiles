@@ -31,7 +31,7 @@ function Wifi() {
     const network = Network.get_default()
     const wifi = bind(network, "wifi")
 
-    return <box visible={wifi.as(Boolean)}>
+    return <box className="Network" visible={wifi.as(Boolean)}>
         {wifi.as(wifi => wifi && (
         <label
             label={bind(wifi, "ssid").as(String)}
@@ -76,40 +76,6 @@ function toWord(num) {
 type WsButtonProps = ButtonProps & {
     ws: Hyprland.Workspace;
 };
-/*    const urgent = Variable(-1)
-    hypr.connect("event", (_, event, data) => {
-        if(event === "urgent"){
-            const client = hypr.get_client(data)
-            if (!client) return
-
-            const wsId = client.workspace.id
-            const currentWs = hypr.focusedWorkspace.id
-
-            if (wsId !== currentWs) {
-                urgent.set(wsId)
-            }
-        }
-    });
-
-    const render = function(activeWorkspaces){
-        const active = activeWorkspaces
-            .filter(ws => !(ws.id >= -99 && ws.id <= -2))
-            .sort((a, b) => a.id - b.id)
-            .map(ws => (toWord(ws.id)));*/
-        
-        /*return <box className="Workspaces">
-            {labels.map((label, index) => (
-                <button
-                    className={active.includes(label) ? (
-                        bind(hypr, "focusedWorkspace").as(fw => 
-                        toWord(fw.id) === label ? "focused" :"active") 
-                    ) : "empty"}
-                    onClicked={() => 
-                        hypr.get_workspace(index+1).focus()}>
-                    {label}
-                </button>
-            ))}
-        </box>*/
 
 function WorkspaceButton({ ws, ...props }: WsButtonProps) {
     const hypr = Hyprland.get_default();
@@ -162,19 +128,18 @@ function Workspaces() {
             <WorkspaceButton ws={Hyprland.Workspace.dummy(i + 1, null)} />
           ))}
         </box> );
-    // TODO: urgent workspaces
 }
 
 function FocusedClient() {
     const hypr = Hyprland.get_default();
     const focused = bind(hypr, "focusedClient");
 
-    function maxWidth(word, width = 5){
-        if(word.length < width){
-            return word
+    function maxWidth(title, width){
+        if(title.length < width){
+            return title
         }
         else{
-            return word.slice(0, width) + "..."
+            return title.slice(0, width) + "..."
         }
     }
 
@@ -184,11 +149,10 @@ function FocusedClient() {
         {focused.as(client => (
             client && <label 
                 label={bind(client, "title")
-                    .as(title => maxWidth(title, 70))} // width of focused client chars
+                    .as(title => title ? maxWidth(title, 70) : "")} // width of focused client chars
             />
         ))}
     </box>
-    // TODO: fix overlapping client 
 }
 
 function Time({ format = " %H:%M %m-%d " }) {
@@ -230,31 +194,38 @@ function Language() {
     return <box className="Language">
         <label label={bind(layout).as(shorten)}/>
     </box>
-    // TODO: fix not resetting language at start
 }
 
 
 function Audio() {
     const speaker = Wp.get_default()?.audio.defaultSpeaker!
-
+    const out = function(){
+        try {
+             exec(["bash", "-c", "hyprctl dispatch exec pavucontrol"])
+        }
+        catch (err) {
+            return null
+        }
+    };
     return <box className="Audio">
         <icon icon={bind(speaker, "volumeIcon")} />
-        <label label={bind(speaker, "volume").as(vol =>
-            `${Math.floor(vol * 100)}%`
-        )} />
+        <button onClicked={out}>
+            {bind(speaker, "volume")
+                .as(vol => `${Math.floor(vol * 100)}%`)}  
+        </button>
     </box>
 }
-
+// TODO: Bluetooth headphones
 
 
 export default function Bar(monitor: Gdk.Monitor) {
-    const { TOP, LEFT, RIGHT } = Astal.WindowAnchor
+    const { BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
 
     return <window
         className="Bar"
         gdkmonitor={monitor}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
-        anchor={TOP | LEFT | RIGHT}>
+        anchor={BOTTOM | LEFT | RIGHT}>
         <centerbox>
             <box hexpand halign={Gtk.Align.START}>
                 <Workspaces />
@@ -273,4 +244,3 @@ export default function Bar(monitor: Gdk.Monitor) {
         </centerbox>
     </window>
 }
-// TODO: Volume, Memory

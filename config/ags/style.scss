@@ -1,14 +1,17 @@
+$text-color: white;
+$bg-color: #FFEAFF;
+$bg-color2: #308EB4;
+
 window.Bar {
     background: transparent;
-    color: white;
     font-size: 15px;
-    font-family: monospace;
-    color: #fdf6e3;
+    font-family: "Gentium Plus";
+    color: $text-color;
 
     centerbox {
-        background: black;
-        border: 1px solid white;
+        background: $bg-color;
         margin: 0 100px;
+        border-radius: 4px;
 
         box {
             margin: 0 5px;
@@ -20,16 +23,17 @@ window.Bar {
                 min-width: 40px;
                 padding: 0 2px;
                 margin: 2px 1px;
-                background: black;
+                background: $bg-color2;
                 border-radius: 0;
+                color: $text-color;
             }
 
             button.empty {
-                background: black;
+                background: #02394A;
             }
 
             button.active {
-                background: #3b444b;
+                background: $bg-color2;
             }
 
             button:hover {
@@ -56,6 +60,13 @@ window.Bar {
 
         .Audio {
             color: #268bd2;
+
+            button {
+                color: #268bd2;
+                font-weight: normal;
+                background-color: $bg-color;
+                padding: 0;
+            }
         }
 
         .Battery {
@@ -63,20 +74,33 @@ window.Bar {
         }
 
         .SysTray {
+            background: $bg-color;
+
             button {
-                background: black;
-                padding: 0 0;
+                background: $bg-color2;
+                border-radius: 0;
+                padding: 0 2px;
             }
         }
 
+        .Network {
+            background: $bg-color2;
+            padding: 0 5px;
+        }
+
         .Language {
-            border: 1px solid white;
             min-width: 50px;
+            background: $bg-color2;
+            color: $text-color;
 
             label {
                 margin-left: 15px;
                 /* TODO: Make align center*/
             }
+        }
+
+        .Time {
+            background: $bg-color2;
         }
     }
 }

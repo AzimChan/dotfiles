@@ -66,6 +66,18 @@ return {
       -- vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
 
       require('neo-tree').setup {
+        event_handlers = {
+
+          {
+            event = 'file_open_requested',
+            handler = function()
+              -- auto close
+              -- vim.cmd("Neotree close")
+              -- OR
+              require('neo-tree.command').execute { action = 'close' }
+            end,
+          },
+        },
         close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
         popup_border_style = 'rounded',
         enable_git_status = true,
@@ -173,7 +185,7 @@ return {
         -- see `:h neo-tree-custom-commands-global`
         commands = {},
         window = {
-          position = 'left',
+          position = 'right',
           width = 30,
           mapping_options = {
             noremap = true,
@@ -229,8 +241,8 @@ return {
             ['q'] = 'close_window',
             ['R'] = 'refresh',
             ['?'] = 'show_help',
-            ['<'] = 'prev_source',
-            ['>'] = 'next_source',
+            [' '] = 'prev_source',
+            [' '] = 'next_source',
             ['i'] = 'show_file_details',
             -- ["i"] = {
             --   "show_file_details",

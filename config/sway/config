@@ -25,7 +25,8 @@ include ~/.config/sway/keybinds.conf
 
 
 ### Auto start
-
+# OSD server
+exec swayosd-server &
 # Wallpaper
 exec swww-daemon
 # Notification daemon
@@ -39,7 +40,7 @@ exec wl-paste --type text --watch cliphist store
 exec wl-paste --type image --watch cliphist store
 
 ### Border configuration
-default_border pixel 4
+default_border pixel 1
 # Color shemes for windows 
 set $bgcolor    #90d5ff  
 set $in-bgcolor #282828 
@@ -54,8 +55,8 @@ client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor 
 #exec_always ./config/polybar/launch.sh --docky
 # default gaps
-gaps inner 6
-gaps outer 4
+gaps inner 1
+gaps outer 1
 
 
 ### Output configuration
@@ -95,9 +96,9 @@ input type:touchpad {
   click_method button_areas
   drag enabled
   dwt disabled 
-  events disabled_on_external_mouse
+  # events disabled_on_external_mouse
   middle_emulation enabled
-  pointer_accel 0.3
+  pointer_accel 0.2
   scroll_method two_finger
   tap enabled
 
@@ -108,6 +109,6 @@ input type:touchpad {
 ### Key bindings
 ### Status Bar
 
-exec_always pkill waybar || waybar --config .config/waybar/minimal/config.jsonc --style .config/waybar/minimal/style.css
+exec_always pkill waybar; waybar --config .config/waybar/minimal/config.jsonc --style .config/waybar/minimal/style.css
 
 include /etc/sway/config.d/*

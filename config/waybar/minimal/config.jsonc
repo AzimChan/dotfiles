@@ -5,10 +5,10 @@
 	"margin": "0 100",
 
 	"modules-left": [
-		"hyprland/workspaces"
+		"sway/workspaces"
 	],
 	"modules-center": [
-		"hyprland/window"
+		"sway/window"
 	],
 	"modules-right": [
 		"network",
@@ -16,12 +16,12 @@
 		"memory",
 		"battery",
 		"tray",
-		"hyprland/language",
+		"sway/language",
 		"clock#2",
 		"clock#3",
 	],
 
-	"hyprland/workspaces": {
+	"sway/workspaces": {
 		"disable-scroll": true,
 		"format": "{icon}",
 		"all-outputs": true,
@@ -38,11 +38,16 @@
 			"10": "ten"
 		},
 		"persistent-workspaces": {
-			"*": 10,
+			"1":10,
+			"2":11,
+			"3":12,
+			"4":13,
+			"5":14 ,
+			"6":15,
 		}
 	},
 
-	"hyprland/language": {
+	"sway/language": {
 	    "format": "{}",
 	    "format-en":"en",
 	    "format-kk":"kz", //Kazakh for some strange reason stands for kk (somebody change this)

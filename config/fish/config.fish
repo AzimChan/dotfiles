@@ -15,4 +15,3 @@ fastfetch
 
 # Created by `pipx` on 2024-12-27 16:03:27
 set PATH $PATH /home/barbos/.local/bin
-

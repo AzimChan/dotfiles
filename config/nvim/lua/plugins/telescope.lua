@@ -24,6 +24,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
   },
   config = function()
     require('telescope').setup {
+      pickers = {
+        find_files = {
+          theme = 'dropdown',
+        },
+        grep_string = {
+          theme = 'dropdown',
+        },
+      },
       extensions = {
         ['ui-select'] = {
           require('telescope.themes').get_dropdown(),
