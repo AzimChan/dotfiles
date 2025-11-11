@@ -1,5 +1,6 @@
 echo "Symlinking"
 
+ln -s ~/dotfiles/config/quicshell ~/.config/quickshell
 ln -s ~/dotfiles/config/ags ~/.config/ags
 ln -s ~/dotfiles/config/fastfetch ~/.config/fastfetch
 ln -s ~/dotfiles/config/fish ~/.config/fish

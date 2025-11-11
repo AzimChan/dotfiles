@@ -323,6 +323,7 @@ require('lazy').setup({
   require 'plugins.telescope',
   require 'plugins.obsidian-nvim',
   require 'plugins.image',
+  require 'plugins.molten',
   require 'lsp',
 }, {
   ui = {
