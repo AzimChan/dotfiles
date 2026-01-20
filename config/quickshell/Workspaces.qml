@@ -8,19 +8,19 @@ import QtQuick.Layouts
 
 // TODO: Borrowed code :p
 
-RowLayout {
+ColumnLayout {
     id: workspaces
-    spacing: 5
-    anchors.left: parent.left
-    anchors.verticalCenter: parent.verticalCenter
+    spacing: 1
+    anchors.top: parent.top
+    anchors.topMargin: 5
+    anchors.bottomMargin: 5
+    anchors.horizontalCenter: parent.horizontalCenter
 
-    property bool usingHyprland: Hyprland.workspaces.values.length == 0 ? false : true
-
-    property var currentWorkspaces: usingHyprland ? Hyprland.workspaces.values.filter(w => w.monitor.name == screen.name) : I3.workspaces.values.filter(w => w.monitor.name == screen.name)
+    property var currentWorkspaces: Hyprland.workspaces.values.filter(w => w.monitor.name == screen.name)
 
 
     Repeater { 
-        model: parent.currentWorkspaces
+        model: 10
         //model: Hyprland.workspaces.values.filter(w => w.monitor.name == taskbar.screen.name)
         Button {
             id: control
@@ -28,34 +28,33 @@ RowLayout {
             contentItem: Text {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                text: usingHyprland ? modelData.id : modelData.number
-                width: 10
-                height: 10
-                color: "black"
+                text: modelData < 9 ? modelData + 1 : 0
+                font.pixelSize: 18
+                font.bold: true
+                width: parent.width
+                height: 20
+                color: getColor()
             }
             onPressed: event => {
-                if(usingHyprland) {
-                    Hyprland.dispatch(`workspace ` + modelData.id);
-                }else {
-                  I3.dispatch(`workspace ` + modelData.number);
+                if((modelData + 1) != Hyprland.focusedWorkspace.id){
+                    Hyprland.dispatch(`workspace ` + (modelData + 1));
                 }
-                event.accepted = true;
             }
             property int focusedWindowId: 0
+
             function getColor() {
-                if (usingHyprland == true) {
-                  focusedWindowId = Hyprland.focusedWorkspace.id;
-                }else {
-                  focusedWindowId = I3.focusedWorkspace.number;
+                focusedWindowId = Hyprland.focusedWorkspace.id;
+                if (((modelData + 1) == focusedWindowId) || mouse.hovered) {
+                    return "cyan";
                 }
 
-                if (modelData.urgent) {
-                    return "red";
-                } else {
-                    if ((usingHyprland && modelData.id == focusedWindowId) || mouse.hovered) {
-                         return "blue"
-                    }else if ((usingHyprland == false && modelData.number == focusedWindowId) || mouse.hovered) {
-                         return "green"
+                // TODO: awkward
+                for(let i = 0; i < parent.currentWorkspaces.length; i++){
+                    if(parent.currentWorkspaces[i].id == (modelData + 1)){
+                        if(parent.currentWorkspaces[i].urgent){
+                            return "red"
+                        }
+                        return "white"
                     }
                 }
                 return "gray";
@@ -65,10 +64,10 @@ RowLayout {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 border.width: 1
-                border.color: Config.colors.outline
-                width: 22
-                height: 22
-                color: getColor()
+                border.color: "black"
+                width: parent.width
+                height: 20
+                color: "black"
             }
 
             HoverHandler {
